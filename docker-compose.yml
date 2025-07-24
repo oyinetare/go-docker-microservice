@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  users-service:
+    build: ./users-service
+    ports:
+      - "8123:8123"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_HOST=${DATABASE_HOST}
+    networks:
+      - app-network
+
+  db:
+    build: ./test-database
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+networks:
+  app-network:
+    driver: bridge

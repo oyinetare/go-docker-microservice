@@ -11,12 +11,12 @@ import (
 )
 
 type Server struct {
-	repo   *repository.Repository
+	repo   repository.RepositoryInterface
 	router *mux.Router
 	port   int
 }
 
-func New(repo *repository.Repository, port int) *Server {
+func New(repo repository.RepositoryInterface, port int) *Server {
 	return &Server{
 		repo: repo,
 		port: port,
