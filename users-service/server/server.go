@@ -2,11 +2,12 @@ package server
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/oyinetare/go-docker-microservice/api"
 	"github.com/oyinetare/go-docker-microservice/repository"
-	"log"
-	"net/http"
 )
 
 type Server struct {
