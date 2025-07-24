@@ -8,10 +8,10 @@ import (
 )
 
 type UserAPI struct {
-	repo *repository.Repository
+	repo repository.RepositoryInterface
 }
 
-func NewUserAPI(repo *repository.Repository) *UserAPI {
+func NewUserAPI(repo repository.RepositoryInterface) *UserAPI {
 	return &UserAPI{repo: repo}
 }
 
