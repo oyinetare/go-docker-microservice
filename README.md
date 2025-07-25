@@ -29,13 +29,13 @@ This project demonstrates modern microservice architecture patterns, containeriz
 - Layered architecture with clear separation of concerns
 - Repository pattern for data access
 - Dependency injection for testability
-- Gorilla Mux for routing
+- [Gorilla Mux for routing](https://github.com/gorilla/mux)
 
 ## 📦 Prerequisites
 
-- Docker 20.10+
-- Docker Compose 2.0+
-- Go 1.21+ (for local development)
+- [Docker 20.10+](https://docs.docker.com/get-started/get-docker/)
+- [Docker Compose 2.0+](https://docs.docker.com/compose/install/)
+- [Go 1.21+ (for local development)](https://go.dev/doc/install)
 
 ## 📁 Project Structure
 
