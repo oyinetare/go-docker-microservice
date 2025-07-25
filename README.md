@@ -1,20 +1,22 @@
 # go-docker-microservice
 
-Toy microservice project inspired by the article ["Learn Docker by Building a Microservice" by Dave Kerr](https://dwmkerr.com/learn-docker-by-building-a-microservice/) that manages a directory of email addresses to phone numbers and built with Go and Docker.
+Toy microservice project inspired by the article ["Learn Docker by Building a Microservice"](https://dwmkerr.com/learn-docker-by-building-a-microservice/) by Dave Kerr that manages a directory of email addresses to phone numbers and built with Go and Docker.
 
 This project demonstrates modern microservice architecture patterns, containerization with Docker, and best practices for building scalable applications.
 
 ## 📋 Table of Contents
 
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [API Documentation](#api-documentation)
-- [Testing](#testing)
-- [Development](#development)
-- [Docker Commands](#docker-commands)
-- [Architecture & Design Patterns used](#architecture)
-- [Acknowledgments](#acknowledgments)
+- [Features](#-features)
+- [Prerequisites](#-prerequisites)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [API Documentation](#-api-documentation)
+- [Testing](#-testing)
+- [Development](#-development)
+- [Docker Commands](#-docker-commands)
+- [Architecture & Design Patterns](#-architecture--design-patterns)
+- [Note](#-note)
+- [Acknowledgments](#-acknowledgments)
 
 ## ✨ Features
 
@@ -35,6 +37,17 @@ This project demonstrates modern microservice architecture patterns, containeriz
 - Docker Compose 2.0+
 - Go 1.21+ (for local development)
 
+## 📁 Project Structure
+
+```
+go-docker-microservice/
+├── integration-tests/  # End-to-end tests
+├── test-database/      # MySQL Docker setup
+├── users-service/      # Go microservice
+├── docker-compose.yml  # Service orchestration
+└── README.md           # Project documentation
+```
+
 ## 🚀 Getting Started
 
 ### Quick Start with Docker Compose
@@ -46,11 +59,13 @@ git clone https://github.com/oyinetare/go-docker-microservice.git
 cd go-docker-microservice
 ```
 
-2. Build and start all services:
+2. Build and run with Docker Compose to start all services:
 
 ```bash
 docker-compose up --build
 ```
+
+_you might need to run_ `docker-compose up` _again to start the user-service. This happens because of race condition issues._
 
 3. The API will be available at `http://localhost:8123`
 
@@ -61,7 +76,13 @@ docker-compose up --build
 curl http://localhost:8123/users
 
 # Search for a specific user
-curl http://localhost:8123/search?email=homer@thesimpsons.com
+curl http://localhost:8123/search?email=bart@thesimpsons.com
+```
+
+5. Stop the services:
+
+```bash
+docker-compose down
 ```
 
 ### Local Development
@@ -85,8 +106,28 @@ go mod download
 go run main.go
 ```
 
-4. Use `gofmt` for formatting
-5. Use `golint` for linting
+4. Format your code:
+
+```bash
+# Format current directory
+go fmt ./...
+
+# Or use gofmt directly
+gofmt -w .
+```
+
+5. Lint your code (optional):
+
+```bash
+# Install golangci-lint (recommended)
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
+# Run linter
+golangci-lint run
+
+# Or use go vet (built-in)
+go vet ./...
+```
 
 ## 📖 API Documentation
 
@@ -102,30 +143,24 @@ GET /users
 
 ```json
 [
-  {
-    "email": "homer@thesimpsons.com",
-    "phoneNumber": "+1 888 123 1111"
-  },
-  {
-    "email": "marge@thesimpsons.com",
-    "phoneNumber": "+1 888 123 1112"
-  }
+  { "email": "homer@thesimpsons.com", "phoneNumber": "+1 888 123 1111" },
+  { "email": "marge@thesimpsons.com", "phoneNumber": "+1 888 123 1112" },
+  { "email": "maggie@thesimpsons.com", "phoneNumber": "+1 888 123 1113" },
+  { "email": "lisa@thesimpsons.com", "phoneNumber": "+1 888 123 1114" },
+  { "email": "bart@thesimpsons.com", "phoneNumber": "+1 888 123 1115" }
 ]
 ```
 
 #### Search User by Email
 
 ```http
-GET /search?email=homer@thesimpsons.com
+GET /search?email=bart@thesimpsons.com
 ```
 
 **Response (200 OK):**
 
 ```json
-{
-  "email": "homer@thesimpsons.com",
-  "phoneNumber": "+1 888 123 1111"
-}
+{ "email": "bart@thesimpsons.com", "phoneNumber": "+1 888 123 1115" }
 ```
 
 **Response (404 Not Found):**
@@ -261,9 +296,7 @@ docker inspect <container_name>
 docker stats
 ```
 
-
-
-## 🏗 Architecture & Design Patterns used
+## 🏗 Architecture & Design Patterns
 
 ```
 ┌─────────────┐     ┌─────────────┐
@@ -299,10 +332,19 @@ This project implements several design patterns:
 4. **Layered Architecture** - Separates concerns
 5. **Multi-stage Docker Builds** - Optimizes image size
 
+## 📝 Note
+
+This is an educational project designed for learning Docker and microservices concepts. For production use, consider adding:
+
+- Authentication and authorization
+- Input validation and sanitization
+- Structured logging and monitoring
+- Health checks and circuit breakers
+- Database connection pooling
+- Proper error handling and recovery
 
 ## 🙏 Acknowledgments
 
 - Inspired by the article ["Learn Docker by Building a Microservice" by Dave Kerr](https://dwmkerr.com/learn-docker-by-building-a-microservice/)
 - [Microservices architecture style by Microsoft](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/microservices)
-- [refactoring.guru](https://refactoring.guru/design-patterns)
-
+- [Design Patterns Reference - refactoring.guru](https://refactoring.guru/design-patterns) - For understanding the design patterns used in this project
